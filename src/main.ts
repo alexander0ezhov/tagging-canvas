@@ -1,5 +1,8 @@
+import TaggingTool from "./classes/TaggingTool";
+
 const main = (): void => {
-  console.log("24");
+  const taggingTool = new TaggingTool();
+  console.log(taggingTool);
 };
 
 export default main;
