@@ -7,7 +7,7 @@ class TaggingTool {
       switch (true) {
         case this.mouseDown:
           if (this.currentRect) {
-            this.currentRect.resize(e.clientX, e.clientY, "sw");
+            this.currentRect.resize(e.offsetX, e.offsetY, "sw");
             const { x, y, h, w, color } = this.currentRect;
             this.redraw();
             TaggingTool.drawRect({ x, y, h, w, color });
@@ -20,8 +20,8 @@ class TaggingTool {
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
       this.mouseDown = true;
       this.createRect({
-        x: e.clientX,
-        y: e.clientY,
+        x: e.offsetX,
+        y: e.offsetY,
         h: 0,
         w: 0,
         color: "#cccccc",
