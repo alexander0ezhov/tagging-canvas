@@ -11,3 +11,5 @@ export const clearCanvas = ctx.clearRect.bind(
   canvas.width,
   canvas.height
 );
+
+export const RectBorderWidth = 2;

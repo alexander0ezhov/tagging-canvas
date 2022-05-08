@@ -1,17 +1,30 @@
-interface iCoord {
+interface iPos {
   x: number;
   y: number;
+}
+
+interface iCoord extends iPos {
   h: number;
   w: number;
+}
+
+interface iRectProps extends iCoord {
   color: string;
 }
 
-interface iRect extends iCoord {
+interface iRect extends iRectProps {
   resize: (
     mouseX: iCoord["x"],
     mouseY: iCoord["y"],
-    border: borderType
+    border: BorderType
   ) => void;
 }
 
-type borderType = "sw" | "sn";
+type BorderType = "sw" | "sn";
+
+type ActionType = "move" | "resize" | null;
+
+export type CursorByBorderType = {
+  cursor: string;
+  mouseAction: ActionType;
+};

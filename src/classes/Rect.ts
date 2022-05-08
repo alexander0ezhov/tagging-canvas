@@ -1,5 +1,7 @@
+import { iRect, iRectProps } from "../types";
+
 class Rect implements iRect {
-  constructor({ x, y, h, w, color }: iCoord) {
+  constructor({ x, y, h, w, color }: iRectProps) {
     this.x = x;
     this.y = y;
     this.h = h;
