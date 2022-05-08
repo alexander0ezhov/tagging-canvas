@@ -3,10 +3,10 @@ interface iCoord {
   y: number;
   h: number;
   w: number;
+  color: string;
 }
 
 interface iRect extends iCoord {
-  // color?:
   resize: (
     mouseX: iCoord["x"],
     mouseY: iCoord["y"],
