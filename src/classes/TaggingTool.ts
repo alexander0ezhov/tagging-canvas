@@ -81,10 +81,10 @@ class TaggingTool {
   private checkHoveredRect({ x, y }: iPos): any {
     return this.rects.find(
       (rect) =>
-        rect.x <= x &&
-        x <= rect.x + rect.w &&
-        rect.y <= y &&
-        y <= rect.y + rect.h
+        rect.x - RectBorderWidth <= x &&
+        x <= rect.x + rect.w + RectBorderWidth &&
+        rect.y - RectBorderWidth <= y &&
+        y <= rect.y + rect.h + RectBorderWidth
     );
   }
 }
