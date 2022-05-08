@@ -1,30 +1,31 @@
 import { canvas, ctx, clearCanvas, RectBorderWidth } from "../util/canvas";
-import { iCoord, iRect, CursorByBorderType, iPos, iRectProps } from "../types";
+import { iRect, iPos, iRectProps } from "../types";
 import Rect from "./Rect";
-import { convertRectCoordinatesToPositive } from "../util/functions";
+import {
+  convertRectCoordinatesToPositive,
+  getMousePosOnRect,
+} from "../util/functions";
 
 class TaggingTool {
   constructor() {
     canvas.addEventListener("mousemove", (e: MouseEvent) => {
+      const x = e.offsetX;
+      const y = e.offsetY;
       switch (true) {
         case this.mouseDown:
           if (this.currentRect) {
-            this.currentRect.resize(e.offsetX, e.offsetY, "sw");
-            const { x, y, h, w, color } = this.currentRect;
+            this.currentRect.resize(x, y, "sw");
             this.redraw();
-            TaggingTool.drawRect({ x, y, h, w, color });
+            TaggingTool.drawRect(this.currentRect);
           }
           break;
         default:
-          console.log(
-            "getActiveRect",
-            this.checkHoveredRect({ x: e.offsetX, y: e.offsetY })
-          );
-          // if (e.offsetX === this.currentRect?.x) {
-          //   canvas.style.cursor = "pointer";
-          // } else if (canvas.style.cursor !== "crosshair") {
-          //   canvas.style.cursor = "crosshair";
-          // }
+          const hoveredRect = this.checkHoveredRect({ x, y });
+          if (hoveredRect) {
+            getMousePosOnRect(hoveredRect, { x, y });
+          } else if (canvas.style.cursor !== "crosshair") {
+            canvas.style.cursor = "crosshair";
+          }
           break;
       }
     });
@@ -76,20 +77,6 @@ class TaggingTool {
     ctx.fillRect(x, y, w, h);
     ctx.fill();
   }
-
-  private cursorByBorder: {
-    [index: string]: CursorByBorderType;
-  } = {
-    "start-start": { cursor: "nwse-resize", mouseAction: "resize" },
-    "start-end": { cursor: "nesw-resize", mouseAction: "resize" },
-    "start-none": { cursor: "ew-resize", mouseAction: "resize" },
-    "end-start": { cursor: "nesw-resize", mouseAction: "resize" },
-    "end-end": { cursor: "nwse-resize", mouseAction: "resize" },
-    "end-none": { cursor: "ew-resize", mouseAction: "resize" },
-    "none-start": { cursor: "ns-resize", mouseAction: "resize" },
-    "none-end": { cursor: "ns-resize", mouseAction: "resize" },
-    "none-none": { cursor: "pointer", mouseAction: "move" },
-  };
 
   private checkHoveredRect({ x, y }: iPos): any {
     return this.rects.find(

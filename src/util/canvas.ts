@@ -1,8 +1,9 @@
 export const canvas = <HTMLCanvasElement>document.getElementById("canvas");
 export const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-canvas.style.border = "1px solid gray";
-canvas.style.cursor = "crosshair";
+export const setCursorStyle = (cursorStyle: string = "crosshair"): void => {
+  canvas.style.cursor = cursorStyle;
+};
 
 export const clearCanvas = ctx.clearRect.bind(
   ctx,
@@ -13,3 +14,6 @@ export const clearCanvas = ctx.clearRect.bind(
 );
 
 export const RectBorderWidth = 2;
+
+canvas.style.border = "1px solid gray";
+setCursorStyle();
