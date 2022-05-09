@@ -53,6 +53,7 @@ class TaggingCanvas {
     });
 
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
+      if (e.button !== 0) return;
       this.rects.forEach((rect) => (rect.active = false));
       this.mouseDown = true;
       if (this.hoveredRect) {
