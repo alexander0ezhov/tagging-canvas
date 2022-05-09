@@ -17,6 +17,7 @@ interface iRect extends iRectProps {
     border: BorderType
   ) => void;
   move: (mouseX: iCoord["x"], mouseY: iCoord["y"]) => void;
+  id: string;
 }
 
 type BorderType =

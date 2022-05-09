@@ -48,6 +48,22 @@ class TaggingCanvas {
       }
     };
 
+    const onMouseUp = () => {
+      this.mouseDown = false;
+      this.hoveredRect = null;
+      this.hoveredRectCursorProps = null;
+      if (this.currentRect) {
+        const { x, y, w, h } = convertRectCoordinatesToPositive(
+          this.currentRect
+        );
+        this.currentRect.x = x;
+        this.currentRect.y = y;
+        this.currentRect.w = w;
+        this.currentRect.h = h;
+      }
+      this.redraw();
+    };
+
     canvas.addEventListener("mousemove", (e: MouseEvent) => {
       this.mouseDown ? moveWithMouseDown(e) : moveWithoutMouseDown(e);
     });
@@ -71,20 +87,6 @@ class TaggingCanvas {
       this.redraw();
     });
 
-    const onMouseUp = () => {
-      this.mouseDown = false;
-      this.hoveredRect = null;
-      this.hoveredRectCursorProps = null;
-      if (this.currentRect) {
-        const { x, y, w, h } = convertRectCoordinatesToPositive(
-          this.currentRect
-        );
-        this.currentRect.x = x;
-        this.currentRect.y = y;
-        this.currentRect.w = w;
-        this.currentRect.h = h;
-      }
-    };
     canvas.addEventListener("mouseup", onMouseUp);
     canvas.addEventListener("mouseout", onMouseUp);
   }
@@ -132,6 +134,12 @@ class TaggingCanvas {
       activeRect.color = tag.color;
       activeRect.label = tag.label;
     }
+    this.redraw();
+  };
+
+  public deleteRect = (id: string) => {
+    this.rects = this.rects.filter((rect) => rect.id !== id);
+    if (this.currentRect?.id === id) this.currentRect = null;
     this.redraw();
   };
 }

@@ -86,3 +86,10 @@ export const getCursorPropsOnRect = (rect: iRectProps, mousePos: iPos) => {
   setCursorStyle(cursorProps.cursor);
   return cursorProps;
 };
+
+export const generateUUID = (): string =>
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (sign) => {
+    const date: number = new Date().getTime();
+    const newSign: number = (date + Math.random() * 16) % 16 | 0;
+    return (sign === "x" ? newSign : (newSign & 0x3) | 0x8).toString(16);
+  });
