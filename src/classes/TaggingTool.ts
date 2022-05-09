@@ -1,33 +1,37 @@
 import { canvas, ctx, clearCanvas, RectBorderWidth } from "../util/canvas";
-import { iRect, iPos, iRectProps } from "../types";
+import { iRect, iPos, iRectProps, ActionType } from "../types";
 import Rect from "./Rect";
 import {
   convertRectCoordinatesToPositive,
-  getMousePosOnRect,
+  getCursorPropsOnRect,
 } from "../util/functions";
 
 class TaggingTool {
   constructor() {
-    canvas.addEventListener("mousemove", (e: MouseEvent) => {
+    const moveWithMouseDown = (e: MouseEvent) => {
+      if (!this.currentRect) return;
       const x = e.offsetX;
       const y = e.offsetY;
-      switch (true) {
-        case this.mouseDown:
-          if (this.currentRect) {
-            this.currentRect.resize(x, y, "sw");
-            this.redraw();
-            TaggingTool.drawRect(this.currentRect);
-          }
-          break;
-        default:
-          const hoveredRect = this.checkHoveredRect({ x, y });
-          if (hoveredRect) {
-            getMousePosOnRect(hoveredRect, { x, y });
-          } else if (canvas.style.cursor !== "crosshair") {
-            canvas.style.cursor = "crosshair";
-          }
-          break;
+      this.currentRect.resize(x, y, "sw");
+      this.redraw();
+      TaggingTool.drawRect(this.currentRect);
+    };
+
+    const moveWithoutMouseDown = (e: MouseEvent) => {
+      const x = e.offsetX;
+      const y = e.offsetY;
+      const hoveredRect = this.checkHoveredRect({ x, y });
+      if (hoveredRect) {
+        const cursorProps = getCursorPropsOnRect(hoveredRect, { x, y });
+        this.hoveredRect = hoveredRect;
+        this.hoveredRectAction = cursorProps.mouseAction;
+      } else if (canvas.style.cursor !== "crosshair") {
+        canvas.style.cursor = "crosshair";
       }
+    };
+
+    canvas.addEventListener("mousemove", (e: MouseEvent) => {
+      this.mouseDown ? moveWithMouseDown(e) : moveWithoutMouseDown(e);
     });
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
       this.mouseDown = true;
@@ -40,7 +44,7 @@ class TaggingTool {
       });
     });
 
-    const onMouseUp = (e: MouseEvent) => {
+    const onMouseUp = () => {
       this.mouseDown = false;
       if (this.currentRect) {
         const { x, y, w, h } = convertRectCoordinatesToPositive(
@@ -58,6 +62,8 @@ class TaggingTool {
   private mouseDown = false;
   private rects: iRect[] = [];
   private currentRect: iRect | null = null;
+  private hoveredRect: iRect | null = null;
+  private hoveredRectAction: ActionType | null = null;
 
   private createRect(rectParams: iRectProps) {
     this.rects.push(new Rect(rectParams));

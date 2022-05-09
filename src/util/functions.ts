@@ -1,4 +1,4 @@
-import { CursorActionByPosType, iCoord, iPos, iRectProps } from "../types";
+import { CursorPropsByPosType, iCoord, iPos, iRectProps } from "../types";
 import { RectBorderWidth, setCursorStyle } from "./canvas";
 
 export const convertRectCoordinatesToPositive = ({ x, y, h, w }: iCoord) => {
@@ -14,8 +14,8 @@ export const convertRectCoordinatesToPositive = ({ x, y, h, w }: iCoord) => {
   return result;
 };
 
-export const CursorActionByPos: {
-  [index: string]: CursorActionByPosType;
+export const CursorPropsByPos: {
+  [index: string]: CursorPropsByPosType;
 } = {
   "start-start": { cursor: "nwse-resize", mouseAction: "resize" },
   "start-end": { cursor: "nesw-resize", mouseAction: "resize" },
@@ -38,13 +38,14 @@ const getMouseAxisOnRect = (
   return "center";
 };
 
-export const getMousePosOnRect = (rect: iRectProps, mousePos: iPos) => {
+export const getCursorPropsOnRect = (rect: iRectProps, mousePos: iPos) => {
   const pos = `${getMouseAxisOnRect(
     mousePos.x,
     rect.x,
     rect.w
   )}-${getMouseAxisOnRect(mousePos.y, rect.y, rect.h)}`;
 
-  const cursorAction = CursorActionByPos[pos];
-  setCursorStyle(cursorAction.cursor);
+  const cursorProps = CursorPropsByPos[pos];
+  setCursorStyle(cursorProps.cursor);
+  return cursorProps;
 };

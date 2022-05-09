@@ -24,7 +24,7 @@ type BorderType = "sw" | "sn";
 
 type ActionType = "move" | "resize" | null;
 
-export type CursorActionByPosType = {
+export type CursorPropsByPosType = {
   cursor: string;
   mouseAction: ActionType;
 };
