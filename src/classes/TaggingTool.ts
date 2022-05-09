@@ -1,5 +1,5 @@
 import { canvas, ctx, clearCanvas, RectBorderWidth } from "../util/canvas";
-import { iRect, iPos, iRectProps, ActionType } from "../types";
+import { iRect, iPos, iRectProps, CursorPropsByPosType } from "../types";
 import Rect from "./Rect";
 import {
   convertRectCoordinatesToPositive,
@@ -12,9 +12,17 @@ class TaggingTool {
       if (!this.currentRect) return;
       const x = e.offsetX;
       const y = e.offsetY;
-      this.currentRect.resize(x, y, "sw");
+      switch (this.hoveredRectCursorProps?.mouseAction) {
+        case "move":
+          break;
+        case "resize":
+          this.currentRect.resize(x, y, this.hoveredRectCursorProps.direction);
+          break;
+        default:
+          this.currentRect.resize(x, y, "end-end");
+          break;
+      }
       this.redraw();
-      TaggingTool.drawRect(this.currentRect);
     };
 
     const moveWithoutMouseDown = (e: MouseEvent) => {
@@ -24,28 +32,34 @@ class TaggingTool {
       if (hoveredRect) {
         const cursorProps = getCursorPropsOnRect(hoveredRect, { x, y });
         this.hoveredRect = hoveredRect;
-        this.hoveredRectAction = cursorProps.mouseAction;
-      } else if (canvas.style.cursor !== "crosshair") {
+        this.hoveredRectCursorProps = cursorProps;
+      } else {
         canvas.style.cursor = "crosshair";
+        this.hoveredRect = null;
+        this.hoveredRectCursorProps = null;
       }
     };
 
     canvas.addEventListener("mousemove", (e: MouseEvent) => {
       this.mouseDown ? moveWithMouseDown(e) : moveWithoutMouseDown(e);
     });
+
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
       this.mouseDown = true;
-      this.createRect({
-        x: e.offsetX,
-        y: e.offsetY,
-        h: 0,
-        w: 0,
-        color: "#cccccc",
-      });
+      if (!this.hoveredRect)
+        this.createRect({
+          x: e.offsetX,
+          y: e.offsetY,
+          h: 0,
+          w: 0,
+          color: "#cccccc",
+        });
     });
 
     const onMouseUp = () => {
       this.mouseDown = false;
+      this.hoveredRect = null;
+      this.hoveredRectCursorProps = null;
       if (this.currentRect) {
         const { x, y, w, h } = convertRectCoordinatesToPositive(
           this.currentRect
@@ -63,7 +77,7 @@ class TaggingTool {
   private rects: iRect[] = [];
   private currentRect: iRect | null = null;
   private hoveredRect: iRect | null = null;
-  private hoveredRectAction: ActionType | null = null;
+  private hoveredRectCursorProps: CursorPropsByPosType | null = null;
 
   private createRect(rectParams: iRectProps) {
     this.rects.push(new Rect(rectParams));

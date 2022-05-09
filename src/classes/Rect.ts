@@ -14,11 +14,49 @@ class Rect implements iRect {
   public w: number;
   public color: string;
 
-  public resize(mouseX: this["x"], mouseY: this["y"], border = "sw") {
+  public resize(mouseX: this["x"], mouseY: this["y"], border = "end-end") {
+    const handleStartCenter = () => {
+      this.w = this.x + this.w - mouseX;
+      this.x = mouseX;
+    };
+    const handleEndCenter = () => {
+      this.w = mouseX - this.x;
+    };
+    const handleCenterStart = () => {
+      this.h = this.y + this.h - mouseY;
+      this.y = mouseY;
+    };
+    const handleCenterEnd = () => {
+      this.h = mouseY - this.y;
+    };
     switch (border) {
-      case "sw":
-        this.w = mouseX - this.x;
-        this.h = mouseY - this.y;
+      case "start-center":
+        handleStartCenter();
+        break;
+      case "end-center":
+        handleEndCenter();
+        break;
+      case "center-start":
+        handleCenterStart();
+        break;
+      case "center-end":
+        handleCenterEnd();
+        break;
+      case "start-start":
+        handleStartCenter();
+        handleCenterStart();
+        break;
+      case "start-end":
+        handleStartCenter();
+        handleCenterEnd();
+        break;
+      case "end-start":
+        handleEndCenter();
+        handleCenterStart();
+        break;
+      case "end-end":
+        handleEndCenter();
+        handleCenterEnd();
         break;
     }
   }

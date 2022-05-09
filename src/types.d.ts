@@ -20,11 +20,21 @@ interface iRect extends iRectProps {
   ) => void;
 }
 
-type BorderType = "sw" | "sn";
+type BorderType =
+  | "start-center"
+  | "end-center"
+  | "center-start"
+  | "center-end"
+  | "start-start"
+  | "start-end"
+  | "end-start"
+  | "end-end"
+  | "center-center";
 
 type ActionType = "move" | "resize" | null;
 
 export type CursorPropsByPosType = {
   cursor: string;
   mouseAction: ActionType;
+  direction: BorderType;
 };

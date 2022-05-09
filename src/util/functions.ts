@@ -17,15 +17,51 @@ export const convertRectCoordinatesToPositive = ({ x, y, h, w }: iCoord) => {
 export const CursorPropsByPos: {
   [index: string]: CursorPropsByPosType;
 } = {
-  "start-start": { cursor: "nwse-resize", mouseAction: "resize" },
-  "start-end": { cursor: "nesw-resize", mouseAction: "resize" },
-  "start-center": { cursor: "ew-resize", mouseAction: "resize" },
-  "end-start": { cursor: "nesw-resize", mouseAction: "resize" },
-  "end-end": { cursor: "nwse-resize", mouseAction: "resize" },
-  "end-center": { cursor: "ew-resize", mouseAction: "resize" },
-  "center-start": { cursor: "ns-resize", mouseAction: "resize" },
-  "center-end": { cursor: "ns-resize", mouseAction: "resize" },
-  "center-center": { cursor: "pointer", mouseAction: "move" },
+  "start-start": {
+    cursor: "nwse-resize",
+    mouseAction: "resize",
+    direction: "start-start",
+  },
+  "start-end": {
+    cursor: "nesw-resize",
+    mouseAction: "resize",
+    direction: "start-end",
+  },
+  "start-center": {
+    cursor: "ew-resize",
+    mouseAction: "resize",
+    direction: "start-center",
+  },
+  "end-start": {
+    cursor: "nesw-resize",
+    mouseAction: "resize",
+    direction: "end-start",
+  },
+  "end-end": {
+    cursor: "nwse-resize",
+    mouseAction: "resize",
+    direction: "end-end",
+  },
+  "end-center": {
+    cursor: "ew-resize",
+    mouseAction: "resize",
+    direction: "end-center",
+  },
+  "center-start": {
+    cursor: "ns-resize",
+    mouseAction: "resize",
+    direction: "center-start",
+  },
+  "center-end": {
+    cursor: "ns-resize",
+    mouseAction: "resize",
+    direction: "center-end",
+  },
+  "center-center": {
+    cursor: "pointer",
+    mouseAction: "move",
+    direction: "center-center",
+  },
 };
 
 const getMouseAxisOnRect = (
