@@ -1,3 +1,3 @@
-import main from "./main";
+import TaggingCanvas from "./classes/TaggingCanvas";
 
-main();
+export { TaggingCanvas };

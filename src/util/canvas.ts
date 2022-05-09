@@ -1,17 +1,16 @@
-export const canvas = <HTMLCanvasElement>document.getElementById("canvas");
-export const ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+let canvas: HTMLCanvasElement | null;
+let ctx: CanvasRenderingContext2D | null;
+let setCursorStyle = (cursorStyle: string = "crosshair") => {};
+let clearCanvas = () => {};
 
-export const setCursorStyle = (cursorStyle: string = "crosshair"): void => {
-  canvas.style.cursor = cursorStyle;
+export const initCanvas = (node: HTMLCanvasElement) => {
+  canvas = node;
+  ctx = canvas.getContext("2d");
+  setCursorStyle = (cursorStyle: string = "crosshair"): void => {
+    canvas!.style.cursor = cursorStyle;
+  };
+  clearCanvas = ctx!.clearRect.bind(ctx, 0, 0, canvas.width, canvas.height);
+  setCursorStyle();
 };
 
-export const clearCanvas = ctx.clearRect.bind(
-  ctx,
-  0,
-  0,
-  canvas.width,
-  canvas.height
-);
-
-canvas.style.border = "1px solid gray";
-setCursorStyle();
+export { canvas, ctx, setCursorStyle, clearCanvas };

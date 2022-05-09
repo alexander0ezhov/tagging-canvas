@@ -2,8 +2,10 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const PROD = process.env.NODE_ENV === "production";
+
 module.exports = {
-  entry: `./src/index.ts`,
+  entry: PROD ? `./src/index.ts` : "./src/init.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "index.js",

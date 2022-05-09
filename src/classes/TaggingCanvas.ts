@@ -1,4 +1,4 @@
-import { canvas, ctx, clearCanvas } from "../util/canvas";
+import { canvas, ctx, clearCanvas, initCanvas } from "../util/canvas";
 import {
   iRect,
   iPos,
@@ -14,7 +14,8 @@ import {
 import { DEFAULT_COLOR, RECT_BORDER_WIDTH } from "../util/data";
 
 class TaggingCanvas {
-  constructor() {
+  constructor({ node }: { node: HTMLCanvasElement }) {
+    initCanvas(node);
     const moveWithMouseDown = (e: MouseEvent) => {
       if (!this.currentRect) return;
       const x = e.offsetX;
@@ -42,7 +43,7 @@ class TaggingCanvas {
         this.hoveredRect = hoveredRect;
         this.hoveredRectCursorProps = cursorProps;
       } else {
-        canvas.style.cursor = "crosshair";
+        canvas!.style.cursor = "crosshair";
         this.hoveredRect = null;
         this.hoveredRectCursorProps = null;
       }
@@ -64,11 +65,11 @@ class TaggingCanvas {
       this.redraw();
     };
 
-    canvas.addEventListener("mousemove", (e: MouseEvent) => {
+    canvas!.addEventListener("mousemove", (e: MouseEvent) => {
       this.mouseDown ? moveWithMouseDown(e) : moveWithoutMouseDown(e);
     });
 
-    canvas.addEventListener("mousedown", (e: MouseEvent) => {
+    canvas!.addEventListener("mousedown", (e: MouseEvent) => {
       if (e.button !== 0) return;
       this.rects.forEach((rect) => (rect.active = false));
       this.mouseDown = true;
@@ -88,8 +89,8 @@ class TaggingCanvas {
       this.redraw();
     });
 
-    canvas.addEventListener("mouseup", onMouseUp);
-    canvas.addEventListener("mouseout", onMouseUp);
+    canvas!.addEventListener("mouseup", onMouseUp);
+    canvas!.addEventListener("mouseout", onMouseUp);
   }
   private mouseDown = false;
   private rects: iRect[] = [];
@@ -120,17 +121,17 @@ class TaggingCanvas {
   }
 
   private drawRect({ x, y, h, w, color, active, label }: iRectProps) {
-    ctx.fillStyle = `${color}20`;
-    ctx.strokeStyle = color;
-    ctx.setLineDash(active ? [] : [15, 5]);
-    ctx.strokeRect(x, y, w, h);
-    ctx.fillRect(x, y, w, h);
-    ctx.fill();
-    ctx.setLineDash([]);
+    ctx!.fillStyle = `${color}20`;
+    ctx!.strokeStyle = color;
+    ctx!.setLineDash(active ? [] : [15, 5]);
+    ctx!.strokeRect(x, y, w, h);
+    ctx!.fillRect(x, y, w, h);
+    ctx!.fill();
+    ctx!.setLineDash([]);
     if (label && (!this._disableLabels || active)) {
-      ctx.fillStyle = color;
-      ctx.font = "18px serif";
-      ctx.fillText(label, x, y - 4);
+      ctx!.fillStyle = color;
+      ctx!.font = "18px serif";
+      ctx!.fillText(label, x, y - 4);
     }
   }
 
