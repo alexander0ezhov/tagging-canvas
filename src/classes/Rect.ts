@@ -1,4 +1,5 @@
 import { iRect, iRectProps } from "../types";
+import { BROWSER_ZOOM } from "../util/data";
 
 class Rect implements iRect {
   constructor({ x, y, h, w, color }: iRectProps) {
@@ -13,6 +14,11 @@ class Rect implements iRect {
   public h: number;
   public w: number;
   public color: string;
+
+  public move(movementX: this["x"], movementY: this["y"]) {
+    this.x = this.x + movementX * BROWSER_ZOOM;
+    this.y = this.y + movementY * BROWSER_ZOOM;
+  }
 
   public resize(mouseX: this["x"], mouseY: this["y"], border = "end-end") {
     const handleStartCenter = () => {

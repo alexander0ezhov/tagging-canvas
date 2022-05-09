@@ -58,7 +58,7 @@ export const CursorPropsByPos: {
     direction: "center-end",
   },
   "center-center": {
-    cursor: "pointer",
+    cursor: "move",
     mouseAction: "move",
     direction: "center-center",
   },

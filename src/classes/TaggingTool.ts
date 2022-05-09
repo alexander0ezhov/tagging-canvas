@@ -14,6 +14,7 @@ class TaggingTool {
       const y = e.offsetY;
       switch (this.hoveredRectCursorProps?.mouseAction) {
         case "move":
+          this.currentRect.move(e.movementX, e.movementY);
           break;
         case "resize":
           this.currentRect.resize(x, y, this.hoveredRectCursorProps.direction);
