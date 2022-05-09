@@ -1,8 +1,9 @@
-import TaggingTool from "./classes/TaggingTool";
+import TaggingCanvas from "./classes/TaggingCanvas";
 
 const main = (): void => {
-  const taggingTool = new TaggingTool();
-  console.log(taggingTool);
+  const taggingTool = new TaggingCanvas();
+
+  // console.log(taggingTool);
 };
 
 export default main;

@@ -13,7 +13,7 @@ import {
 } from "../util/functions";
 import { DEFAULT_COLOR, RECT_BORDER_WIDTH } from "../util/data";
 
-class TaggingTool {
+class TaggingCanvas {
   constructor() {
     const moveWithMouseDown = (e: MouseEvent) => {
       if (!this.currentRect) return;
@@ -97,12 +97,12 @@ class TaggingTool {
   private createRect(rectParams: iRectProps) {
     this.rects.push(new Rect(rectParams));
     this.currentRect = this.rects[this.rects.length - 1];
-    TaggingTool.drawRect(rectParams);
+    TaggingCanvas.drawRect(rectParams);
   }
 
   private redraw() {
     clearCanvas();
-    this.rects.forEach(TaggingTool.drawRect);
+    this.rects.forEach(TaggingCanvas.drawRect);
   }
 
   private static drawRect({ x, y, h, w, color, active }: iRectProps) {
@@ -135,4 +135,4 @@ class TaggingTool {
   };
 }
 
-export default TaggingTool;
+export default TaggingCanvas;
