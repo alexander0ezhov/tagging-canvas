@@ -13,7 +13,5 @@ export const clearCanvas = ctx.clearRect.bind(
   canvas.height
 );
 
-export const RectBorderWidth = 2;
-
 canvas.style.border = "1px solid gray";
 setCursorStyle();

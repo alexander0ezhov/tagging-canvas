@@ -8,10 +8,7 @@ interface iCoord extends iPos {
   w: number;
 }
 
-interface iRectProps extends iCoord {
-  color: string;
-  active: boolean;
-}
+type iRectProps = iCoord & TagMetaType & { active: boolean };
 
 interface iRect extends iRectProps {
   resize: (
@@ -34,6 +31,11 @@ type BorderType =
   | "center-center";
 
 type ActionType = "move" | "resize" | null;
+
+type TagMetaType = {
+  color: string;
+  label?: string;
+};
 
 export type CursorPropsByPosType = {
   cursor: string;

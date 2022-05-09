@@ -1,10 +1,17 @@
-import { canvas, ctx, clearCanvas, RectBorderWidth } from "../util/canvas";
-import { iRect, iPos, iRectProps, CursorPropsByPosType } from "../types";
+import { canvas, ctx, clearCanvas } from "../util/canvas";
+import {
+  iRect,
+  iPos,
+  iRectProps,
+  CursorPropsByPosType,
+  TagMetaType,
+} from "../types";
 import Rect from "./Rect";
 import {
   convertRectCoordinatesToPositive,
   getCursorPropsOnRect,
 } from "../util/functions";
+import { DEFAULT_COLOR, RECT_BORDER_WIDTH } from "../util/data";
 
 class TaggingTool {
   constructor() {
@@ -56,7 +63,7 @@ class TaggingTool {
           y: e.offsetY,
           h: 0,
           w: 0,
-          color: "#cccccc",
+          color: this.activeTag.color,
           active: true,
         });
       }
@@ -85,6 +92,7 @@ class TaggingTool {
   private currentRect: iRect | null = null;
   private hoveredRect: iRect | null = null;
   private hoveredRectCursorProps: CursorPropsByPosType | null = null;
+  private activeTag: TagMetaType = { color: DEFAULT_COLOR };
 
   private createRect(rectParams: iRectProps) {
     this.rects.push(new Rect(rectParams));
@@ -109,12 +117,22 @@ class TaggingTool {
   private checkHoveredRect({ x, y }: iPos): any {
     return this.rects.find(
       (rect) =>
-        rect.x - RectBorderWidth <= x &&
-        x <= rect.x + rect.w + RectBorderWidth &&
-        rect.y - RectBorderWidth <= y &&
-        y <= rect.y + rect.h + RectBorderWidth
+        rect.x - RECT_BORDER_WIDTH <= x &&
+        x <= rect.x + rect.w + RECT_BORDER_WIDTH &&
+        rect.y - RECT_BORDER_WIDTH <= y &&
+        y <= rect.y + rect.h + RECT_BORDER_WIDTH
     );
   }
+
+  public setActiveTag = (tag: TagMetaType) => {
+    this.activeTag = tag;
+    const activeRect = this.rects.find((rect) => rect.active);
+    if (activeRect) {
+      activeRect.color = tag.color;
+      activeRect.label = tag.label;
+    }
+    this.redraw();
+  };
 }
 
 export default TaggingTool;

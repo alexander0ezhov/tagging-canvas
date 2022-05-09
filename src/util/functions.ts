@@ -1,5 +1,6 @@
 import { CursorPropsByPosType, iCoord, iPos, iRectProps } from "../types";
-import { RectBorderWidth, setCursorStyle } from "./canvas";
+import { setCursorStyle } from "./canvas";
+import { RECT_BORDER_WIDTH } from "./data";
 
 export const convertRectCoordinatesToPositive = ({ x, y, h, w }: iCoord) => {
   const result: iCoord = { x, y, h, w };
@@ -69,8 +70,8 @@ const getMouseAxisOnRect = (
   rectAxis: number,
   rectAxisSize: number
 ) => {
-  if (mouseAxis - rectAxis < RectBorderWidth) return "start";
-  if (rectAxis + rectAxisSize - mouseAxis < RectBorderWidth) return "end";
+  if (mouseAxis - rectAxis < RECT_BORDER_WIDTH) return "start";
+  if (rectAxis + rectAxisSize - mouseAxis < RECT_BORDER_WIDTH) return "end";
   return "center";
 };
 
