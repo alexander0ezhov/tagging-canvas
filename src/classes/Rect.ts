@@ -3,13 +3,14 @@ import { BROWSER_ZOOM } from "../util/data";
 import { generateUUID } from "../util/functions";
 
 class Rect implements iRect {
-  constructor({ x, y, h, w, color, active }: iRectProps) {
+  constructor({ x, y, h, w, color, label, active }: iRectProps) {
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
     this.color = color;
     this.active = active;
+    this.label = label;
     this.id = generateUUID();
   }
   public x;
@@ -19,6 +20,7 @@ class Rect implements iRect {
   public color;
   public active;
   public id;
+  public label;
 
   public move(movementX: this["x"], movementY: this["y"]) {
     this.x = this.x + movementX * BROWSER_ZOOM;

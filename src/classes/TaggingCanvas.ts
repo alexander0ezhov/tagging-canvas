@@ -81,6 +81,7 @@ class TaggingCanvas {
           h: 0,
           w: 0,
           color: this.activeTag.color,
+          label: this.activeTag.label,
           active: true,
         });
       }
@@ -96,25 +97,41 @@ class TaggingCanvas {
   private hoveredRect: iRect | null = null;
   private hoveredRectCursorProps: CursorPropsByPosType | null = null;
   private activeTag: TagMetaType = { color: DEFAULT_COLOR };
+  private _disableLabels: boolean = false;
+
+  get disableLabels() {
+    return this._disableLabels;
+  }
+
+  set disableLabels(value) {
+    this._disableLabels = value;
+    this.redraw();
+  }
 
   private createRect(rectParams: iRectProps) {
     this.rects.push(new Rect(rectParams));
     this.currentRect = this.rects[this.rects.length - 1];
-    TaggingCanvas.drawRect(rectParams);
+    this.drawRect(rectParams);
   }
 
   private redraw() {
     clearCanvas();
-    this.rects.forEach(TaggingCanvas.drawRect);
+    this.rects.forEach(this.drawRect.bind(this));
   }
 
-  private static drawRect({ x, y, h, w, color, active }: iRectProps) {
+  private drawRect({ x, y, h, w, color, active, label }: iRectProps) {
     ctx.fillStyle = `${color}20`;
     ctx.strokeStyle = color;
     ctx.setLineDash(active ? [] : [15, 5]);
     ctx.strokeRect(x, y, w, h);
     ctx.fillRect(x, y, w, h);
     ctx.fill();
+    ctx.setLineDash([]);
+    if (label && (!this._disableLabels || active)) {
+      ctx.fillStyle = color;
+      ctx.font = "18px serif";
+      ctx.fillText(label, x, y - 4);
+    }
   }
 
   private checkHoveredRect({ x, y }: iPos): any {
