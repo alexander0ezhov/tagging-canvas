@@ -46,15 +46,21 @@ class TaggingTool {
     });
 
     canvas.addEventListener("mousedown", (e: MouseEvent) => {
+      this.rects.forEach((rect) => (rect.active = false));
       this.mouseDown = true;
-      if (!this.hoveredRect)
+      if (this.hoveredRect) {
+        this.hoveredRect.active = true;
+      } else {
         this.createRect({
           x: e.offsetX,
           y: e.offsetY,
           h: 0,
           w: 0,
           color: "#cccccc",
+          active: true,
         });
+      }
+      this.redraw();
     });
 
     const onMouseUp = () => {
@@ -91,9 +97,10 @@ class TaggingTool {
     this.rects.forEach(TaggingTool.drawRect);
   }
 
-  private static drawRect({ x, y, h, w, color }: iRectProps) {
+  private static drawRect({ x, y, h, w, color, active }: iRectProps) {
     ctx.fillStyle = `${color}20`;
     ctx.strokeStyle = color;
+    ctx.setLineDash(active ? [] : [15, 5]);
     ctx.strokeRect(x, y, w, h);
     ctx.fillRect(x, y, w, h);
     ctx.fill();

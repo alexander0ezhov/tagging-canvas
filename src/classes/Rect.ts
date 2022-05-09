@@ -2,18 +2,20 @@ import { iRect, iRectProps } from "../types";
 import { BROWSER_ZOOM } from "../util/data";
 
 class Rect implements iRect {
-  constructor({ x, y, h, w, color }: iRectProps) {
+  constructor({ x, y, h, w, color, active }: iRectProps) {
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
     this.color = color;
+    this.active = active;
   }
-  public x: number;
-  public y: number;
-  public h: number;
-  public w: number;
-  public color: string;
+  public x;
+  public y;
+  public h;
+  public w;
+  public color;
+  public active;
 
   public move(movementX: this["x"], movementY: this["y"]) {
     this.x = this.x + movementX * BROWSER_ZOOM;

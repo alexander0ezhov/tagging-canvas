@@ -10,6 +10,7 @@ interface iCoord extends iPos {
 
 interface iRectProps extends iCoord {
   color: string;
+  active: boolean;
 }
 
 interface iRect extends iRectProps {
