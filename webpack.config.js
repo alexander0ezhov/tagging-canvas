@@ -4,11 +4,18 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const PROD = process.env.NODE_ENV === "production";
 
+const DEV_PLUGINS = PROD ? [] : [new HTMLWebpackPlugin({
+  template: `./public/index.html`,
+})]
+
 module.exports = {
   entry: PROD ? `./src/index.ts` : "./src/init.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "index.js",
+    filename: "tagging-canvas.min.js",
+    library: 'tagging-canvas',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   resolve: {
     extensions: [".ts", ".js", "css"],
@@ -17,13 +24,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx|js|jsx)$/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-typescript"],
-            plugins: ["@babel/plugin-transform-runtime"],
-          },
-        },
+        use: ['ts-loader'],
         exclude: /node_modules/,
       },
       {
@@ -49,9 +50,7 @@ module.exports = {
     port: 3000,
   },
   plugins: [
-    new HTMLWebpackPlugin({
-      template: `./public/index.html`,
-    }),
+      ...DEV_PLUGINS,
     new MiniCssExtractPlugin(),
   ],
 };

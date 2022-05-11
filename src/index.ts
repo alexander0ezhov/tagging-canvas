@@ -1,3 +1,3 @@
 import TaggingCanvas from "./classes/TaggingCanvas";
 
-export { TaggingCanvas };
+export default TaggingCanvas;
